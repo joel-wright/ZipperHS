@@ -1,7 +1,11 @@
--- The Zipper
+-- ###########################################################################
+--
+-- An introduction to The Zipper
 --
 -- Something to think about if your data is more than just a data structure,
--- but a data structure AND a position...
+-- but a data structure AND a "focus of interest"...
+--
+-- ###########################################################################
 
 module Zipper (
     Tree,
@@ -27,6 +31,15 @@ data Tree a = Leaf
             | Node a (Tree a) (Tree a)
               deriving (Show,Eq)
 
+showTree :: (Show a) => Tree a -> String -> String
+showTree Leaf s = s ++ "Leaf\n"
+showTree (Node x l r) s = s ++ "Node " ++ (show x) ++ "\n"
+                              ++ (showTree l (s ++ "  ")) 
+                              ++ (showTree r (s ++ "  ")) 
+
+printTree :: (Show a) => Tree a -> IO ()
+printTree t = putStrLn (showTree t "")
+
 -- ###########################################################################
 --
 -- If we want to modify specific locations of the Tree then we need directions 
@@ -39,7 +52,26 @@ type Directions = [Direction]
 
 -- ###########################################################################
 --
--- Now we make a ZipTree by separating the tree into a context
+-- A simple way of keeping a "focus of interest"
+--
+-- ###########################################################################
+
+type FocusTree a = (Tree a, Directions)
+
+modifyFocus :: FocusTree a -> (Tree a -> Tree a) -> FocusTree a
+modifyFocus (t, []) f = (f t, [])
+modifyFocus (Node x l r, d:ds) f
+                      | d == L = (Node x (fst $ modifyFocus (l,ds) f) r, d:ds)
+                      | d == R = (Node x l (fst $ modifyFocus (r,ds) f), d:ds)
+
+-- ###########################################################################
+--
+-- But each time we want to modify our focus we have to traverse the whole
+-- Tree structure, make the change, and return a new Tree.
+--
+-- We'll try to improve this situation by separating the Tree into a context
+-- and the sub-Tree that forms our current focus of interest. In this way we
+-- always get O(1) access to the element of the Tree we're interested in :)
 --
 -- ###########################################################################
 
