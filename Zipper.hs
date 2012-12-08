@@ -110,3 +110,10 @@ modify (c, t) f = (c, f t)
 delete :: ZipTree a -> ZipTree a
 delete z = modify z (\t -> Leaf)
 
+doubleNode :: Num a => Tree a -> Tree a
+doubleNode (Node x l r) = (Node (2*x) l r)
+doubleNode _ = error "No value to double at a Leaf"
+
+doubleZipNode :: Num a => ZipTree a -> ZipTree a
+doubleZipNode z = modify z doubleNode
+
