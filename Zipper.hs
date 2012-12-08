@@ -58,6 +58,7 @@ modifyFocus (t, []) f = (f t, [])
 modifyFocus (Node x l r, d:ds) f
                       | d == L = (Node x (fst $ modifyFocus (l,ds) f) r, d:ds)
                       | d == R = (Node x l (fst $ modifyFocus (r,ds) f), d:ds)
+modifyFocus _ _ = error "Can't move down from a Leaf"
 
 -- ###########################################################################
 --
@@ -82,13 +83,16 @@ mkZipTree t = (CRoot, t)
 
 left :: ZipTree a -> ZipTree a
 left (c, Node x l r) = (CLeft c (x,r), l)
+left _ = error "Can't move down from a Leaf"
 
 right :: ZipTree a -> ZipTree a
 right (c, Node x l r) = (CRight c (x,l), r)
+right _ = error "Can't move down from a Leaf"
 
 up :: ZipTree a -> ZipTree a
 up (CLeft c (x,r), t) = (c, Node x t r)
 up (CRight c (x,l), t) = (c, Node x l t)
+up _ = error "Can't go up from the root of the Tree"
 
 top :: ZipTree a -> ZipTree a
 top z@(CRoot, t) = z
