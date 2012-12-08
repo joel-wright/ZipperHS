@@ -43,18 +43,13 @@ printTree t = putStrLn (showTree t "")
 -- ###########################################################################
 --
 -- If we want to modify specific locations of the Tree then we need directions 
+-- and a way of keeping track of our "focus of interest"
 --
 -- ###########################################################################
 
 data Direction = L | R deriving (Show,Eq)
 
 type Directions = [Direction]
-
--- ###########################################################################
---
--- A simple way of keeping a "focus of interest"
---
--- ###########################################################################
 
 type FocusTree a = (Tree a, Directions)
 
