@@ -8,9 +8,13 @@
 -- ###########################################################################
 
 module Zipper (
-    Tree,
-    Direction,
+    Tree(Node, Leaf),
+    Direction(L, R),
     ZipTree,
+    FocusTree,
+    printTree,
+
+    modifyFocus,
 
     mkZipTree,
     left,
@@ -18,7 +22,12 @@ module Zipper (
     up,
     top,
     modify,
+
     delete,
+    doubleZipNode,
+    div3ZipNode,
+    doubleNode,
+    div3Node
 ) where
 
 -- ###########################################################################
@@ -117,3 +126,9 @@ doubleNode _ = error "No value to double at a Leaf"
 doubleZipNode :: Num a => ZipTree a -> ZipTree a
 doubleZipNode z = modify z doubleNode
 
+div3Node :: Fractional a => Tree a -> Tree a
+div3Node (Node x l r) = (Node (x/3) l r)
+div3Node _ = error "No value to divide at a Leaf"
+
+div3ZipNode :: Fractional a => ZipTree a -> ZipTree a
+div3ZipNode z = modify z div3Node
