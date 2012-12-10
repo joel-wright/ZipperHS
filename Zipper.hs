@@ -64,9 +64,10 @@ type FocusTree a = (Tree a, Directions)
 
 modifyFocus :: FocusTree a -> (Tree a -> Tree a) -> FocusTree a
 modifyFocus (t, []) f = (f t, [])
-modifyFocus (Node x l r, d:ds) f
-                      | d == L = (Node x (fst $ modifyFocus (l,ds) f) r, d:ds)
-                      | d == R = (Node x l (fst $ modifyFocus (r,ds) f), d:ds)
+modifyFocus (Node x l r, L:ds) f = let l' = fst $ modifyFocus (l, ds) f
+                                    in l' `seq` ((Node x l' r), L:ds)
+modifyFocus (Node x l r, R:ds) f = let r' = fst $ modifyFocus (r, ds) f
+                                    in r' `seq` ((Node x l r'), R:ds)
 modifyFocus _ _ = error "Can't move down from a Leaf"
 
 -- ###########################################################################
@@ -108,7 +109,9 @@ top z@(CRoot, t) = z
 top z = top.up $ z
 
 modify :: ZipTree a -> (Tree a -> Tree a) -> ZipTree a
-modify (c, t) f = (c, f t)
+modify (c, t) f = t' `seq` (c, t')
+  where
+    t' = f t
 
 -- ###########################################################################
 --
@@ -120,15 +123,16 @@ delete :: ZipTree a -> ZipTree a
 delete z = modify z (\t -> Leaf)
 
 doubleNode :: Num a => Tree a -> Tree a
-doubleNode (Node x l r) = (Node (2*x) l r)
+doubleNode (Node x l r) = x `seq` (Node (2*x) l r)
 doubleNode _ = error "No value to double at a Leaf"
 
 doubleZipNode :: Num a => ZipTree a -> ZipTree a
 doubleZipNode z = modify z doubleNode
 
 div3Node :: Fractional a => Tree a -> Tree a
-div3Node (Node x l r) = (Node (x/3) l r)
+div3Node (Node x l r) = x `seq` (Node (x/3) l r)
 div3Node _ = error "No value to divide at a Leaf"
 
 div3ZipNode :: Fractional a => ZipTree a -> ZipTree a
 div3ZipNode z = modify z div3Node
+

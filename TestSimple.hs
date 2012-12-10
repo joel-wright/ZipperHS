@@ -6,7 +6,7 @@ import Zipper
 
 main :: IO()
 main = do
-	tt <- modifyFocusTreeIO
+	tt <- modifyFocusTreeIO testFocusTree
         t <- return (fst tt)
         printTree t
 
@@ -30,12 +30,14 @@ testTree = Node 20
 testFocusTree :: FocusTree Double
 testFocusTree = (testTree, [L,L,L,L,L,L])
 
-modifyFocusTreeIO :: IO (FocusTree Double)
-modifyFocusTreeIO = return (modifyFocusTree 100000 testFocusTree)
+modifyFocusTreeIO :: Fractional a => FocusTree a -> IO (FocusTree a)
+modifyFocusTreeIO ft = return (modifyFocusTree' 10000000 ft)
 
-modifyFocusTree :: Fractional a => Int -> FocusTree a -> FocusTree a
-modifyFocusTree 0 f = f
-modifyFocusTree n f
-	| (n `mod` 2) == 0 = modifyFocusTree (n-1) (modifyFocus f div3Node)
-        | otherwise        = modifyFocusTree (n-1) (modifyFocus f doubleNode)
+modifyFocusTree' :: Fractional a => Int -> FocusTree a -> FocusTree a
+modifyFocusTree' 0 ft = ft
+modifyFocusTree' n ft = modifyFocusTree'' (n-1) (modifyFocus ft div3Node)
+
+modifyFocusTree'' :: Fractional a => Int -> FocusTree a -> FocusTree a
+modifyFocusTree'' 0 ft = ft
+modifyFocusTree'' n ft = modifyFocusTree' (n-1) (modifyFocus ft doubleNode)
 

@@ -6,9 +6,8 @@ import Zipper
 
 main :: IO()
 main = do
-	tt <- modifyTestTreeIO
-        t <- return (snd $ top tt)
-        printTree t
+	tt <- modifyTestTreeIO testZipTree
+        printTree (snd $ top tt)
 
 testTree :: Tree Double
 testTree = Node 20
@@ -30,12 +29,14 @@ testTree = Node 20
 testZipTree :: ZipTree Double
 testZipTree = (left.left.left.left.left.left) $ mkZipTree testTree
 
-modifyTestTreeIO :: IO (ZipTree Double)
-modifyTestTreeIO = return (top $ modifyTestTree 100000 testZipTree)
+modifyTestTreeIO :: Fractional a => ZipTree a -> IO (ZipTree a)
+modifyTestTreeIO zt = return (top $ modifyTestTree' 10000000 zt)
 
-modifyTestTree :: Fractional a => Int -> ZipTree a -> ZipTree a
-modifyTestTree 0 z = z
-modifyTestTree n z
-	| (n `mod` 2) == 0 = modifyTestTree (n-1) (div3ZipNode z)
-        | otherwise        = modifyTestTree (n-1) (doubleZipNode z)
+modifyTestTree' :: Fractional a => Int -> ZipTree a -> ZipTree a
+modifyTestTree' 0 z = z
+modifyTestTree' n z = modifyTestTree'' (n-1) (div3ZipNode z)
+
+modifyTestTree'' :: Fractional a => Int -> ZipTree a -> ZipTree a
+modifyTestTree'' 0 z = z
+modifyTestTree'' n z = modifyTestTree' (n-1) (doubleZipNode z)
 
