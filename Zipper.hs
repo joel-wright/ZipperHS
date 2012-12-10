@@ -109,9 +109,8 @@ top z@(CRoot, t) = z
 top z = top.up $ z
 
 modify :: ZipTree a -> (Tree a -> Tree a) -> ZipTree a
-modify (c, t) f = t' `seq` (c, t')
-  where
-    t' = f t
+modify (c, t) f = let t' = f t
+                   in t' `seq` (c, t')
 
 -- ###########################################################################
 --
