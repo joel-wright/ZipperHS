@@ -1,0 +1,29 @@
+digraph T {
+   bgcolor = "#FFFFFF00";
+   node [shape = circle];
+   node0[label = "6"];
+   node1[label = "2"];
+   node3[label = "1"];
+   node4[label = "8"];
+   node5[label = "7"];
+   node6[label = "9"];
+   leaf1[shape = point, fixedsize=true, width=.1, height=.1];
+   leaf2[shape = point, fixedsize=true, width=.1, height=.1];
+   leaf3[shape = point, fixedsize=true, width=.1, height=.1];
+   leaf4[shape = point, fixedsize=true, width=.1, height=.1];
+   leaf5[shape = point, fixedsize=true, width=.1, height=.1];
+   leaf6[shape = point, fixedsize=true, width=.1, height=.1];
+   leaf7[shape = point, fixedsize=true, width=.1, height=.1];
+   "node0" -> "node1";
+   "node1" -> "node3";
+   "node0" -> "node4";
+   "node4" -> "node5";
+   "node4" -> "node6";
+   "node1" -> "leaf1";
+   "node3" -> "leaf2";
+   "node3" -> "leaf3";
+   "node5" -> "leaf4";
+   "node5" -> "leaf5";
+   "node6" -> "leaf6";
+   "node6" -> "leaf7";
+}
