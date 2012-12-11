@@ -63,12 +63,16 @@ type Directions = [Direction]
 type FocusTree a = (Tree a, Directions)
 
 modifyFocus :: FocusTree a -> (Tree a -> Tree a) -> FocusTree a
-modifyFocus (t, []) f = (f t, [])
-modifyFocus (Node x l r, L:ds) f = let l' = fst $ modifyFocus (l, ds) f
-                                    in l' `seq` ((Node x l' r), L:ds)
-modifyFocus (Node x l r, R:ds) f = let r' = fst $ modifyFocus (r, ds) f
-                                    in r' `seq` ((Node x l r'), R:ds)
-modifyFocus _ _ = error "Can't move down from a Leaf"
+modifyFocus (t,ds) f = let t' = modifyFocus' t ds f
+                         in t' `seq` (t',ds)
+
+modifyFocus' :: Tree a -> Directions -> (Tree a -> Tree a) -> Tree a
+modifyFocus' t [] f = f t
+modifyFocus' (Node x l r) (L:ds) f = let l' = modifyFocus' l ds f
+                                      in l' `seq` (Node x l' r)
+modifyFocus' (Node x l r) (R:ds) f = let r' = modifyFocus' r ds f
+                                      in r' `seq` (Node x l r')
+modifyFocus' _ _ _ = error "Can't move down from a Leaf"
 
 -- ###########################################################################
 --
