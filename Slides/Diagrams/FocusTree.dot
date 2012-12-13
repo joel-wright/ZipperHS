@@ -15,6 +15,7 @@ digraph T {
    leaf5[shape = point, fixedsize=true, width=.1, height=.1];
    leaf6[shape = point, fixedsize=true, width=.1, height=.1];
    leaf7[shape = point, fixedsize=true, width=.1, height=.1];
+   edge[headport = n];
    "node0" -> "node1";
    "node1" -> "node3";
    "node0" -> "node4";
