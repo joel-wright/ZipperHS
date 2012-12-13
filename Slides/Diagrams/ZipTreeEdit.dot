@@ -3,30 +3,36 @@ digraph T {
    node [shape = circle];
    node0[label = "6"];
    node1[label = "2"];
-   node3[label = "3", color = "#FF2222FF", fontcolor = "#FF2222FF"];
+   node3[shape = house, style=filled, color = "#FFCC34FF", fillcolor = "#FFFB34FF", label = "", fixedsize = true, width = .2, height = .3, tailport = "N"];
    node4[label = "8"];
    node5[label = "7"];
    node6[label = "9"];
-   node7[shape = "plaintext", label = "[L,L]", fontname = "Droid Sans Mono", fontsize = 24.0];
    leaf1[shape = point, fixedsize=true, width=.1, height=.1];
-   leaf2[shape = point, fixedsize=true, width=.1, height=.1, color = "#FF2222FF"];
-   leaf3[shape = point, fixedsize=true, width=.1, height=.1, color = "#FF2222FF"];
    leaf4[shape = point, fixedsize=true, width=.1, height=.1];
    leaf5[shape = point, fixedsize=true, width=.1, height=.1];
    leaf6[shape = point, fixedsize=true, width=.1, height=.1];
    leaf7[shape = point, fixedsize=true, width=.1, height=.1];
-   "node0" -> "node1" [color = "#FF2222FF"];
-   "node1" -> "node0" [color = "#22FF22FF"];
-   "node1" -> "node3" [color = "#FF2222FF"];
-   "node3" -> "node1" [color = "#22FF22FF"];
+   "node0" -> "node1";
    "node0" -> "node4";
    "node4" -> "node5";
    "node4" -> "node6";
    "node1" -> "leaf1";
-   "node3" -> "leaf2" [color = "#FF2222FF"];
-   "node3" -> "leaf3" [color = "#FF2222FF"];
    "node5" -> "leaf4";
    "node5" -> "leaf5";
    "node6" -> "leaf6";
    "node6" -> "leaf7";
+   edge[headport = n];
+   "node1" -> "node3";
+
+   edge[color = "#FFFFFF00"];
+   "node3" -> "node7";
+   edge[color = "#000000FF"];
+
+   subgraph{
+      node7[label = "3", color = "#FF2222FF", fontcolor = "#FF2222FF"];
+      leaf2[shape = point, fixedsize=true, width=.1, height=.1, color = "#FF2222FF"];
+      leaf3[shape = point, fixedsize=true, width=.1, height=.1, color = "#FF2222FF"];
+      "node7" -> "leaf2" [color = "#FF2222FF"];
+      "node7" -> "leaf3" [color = "#FF2222FF"];
+   }
 }
