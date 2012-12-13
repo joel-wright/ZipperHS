@@ -15,11 +15,11 @@ digraph T {
    leaf5[shape = point, fixedsize=true, width=.1, height=.1];
    leaf6[shape = point, fixedsize=true, width=.1, height=.1];
    leaf7[shape = point, fixedsize=true, width=.1, height=.1];
-   edge[headport = n];
    "node0" -> "node1" [color = "#FF2222FF"];
    "node1" -> "node0" [color = "#22FF22FF"];
-   "node1" -> "node3" [color = "#FF2222FF"];
    "node3" -> "node1" [color = "#22FF22FF"];
+   "node1" -> "node3" [color = "#FF2222FF"];
+   edge[headport = n];
    "node0" -> "node4";
    "node4" -> "node5";
    "node4" -> "node6";
